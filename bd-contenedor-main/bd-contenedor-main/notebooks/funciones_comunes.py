@@ -19,3 +19,21 @@ def procesar_datos():
         elif list(elem.keys())[0] == "reserva_id":
             info["reservas"].append(elem) 
     return info 
+
+
+
+from funciones_mongo import db  # importa tu conexión a MongoDB
+
+def obtener_datos_mongo(coleccion, incluir_id=True):
+    """
+    Devuelve una lista de diccionarios de una colección de MongoDB.
+    
+    Parámetros:
+    - coleccion: str, nombre de la colección en MongoDB
+    - incluir_id: bool, si True devuelve también el campo "_id"
+    """
+    if incluir_id:
+        return list(db[coleccion].find())
+    else:
+        return list(db[coleccion].find({}, {"_id": 0}))
+        
