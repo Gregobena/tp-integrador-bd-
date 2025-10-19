@@ -19,7 +19,7 @@ def crear_nodo(tx, label, propiedades):
 def insertar_varios_nodos(label, lista_nodos):
     with driver.session() as session:
         for nodo in lista_nodos:
-            session.write_transaction(crear_nodo, label, nodo)
+            session.execute_write(crear_nodo, label, nodo)  # ← actualizado
 
 # Función para crear relaciones entre nodos
 def crear_relacion(tx, label_origen, propiedad_origen, valor_origen,
@@ -36,7 +36,7 @@ def crear_relacion(tx, label_origen, propiedad_origen, valor_origen,
 def insertar_varias_relaciones(lista_relaciones):
     with driver.session() as session:
         for rel in lista_relaciones:
-            session.write_transaction(
+            session.execute_write(  # ← actualizado
                 crear_relacion,
                 rel["label_origen"], rel["prop_origen"], rel["valor_origen"],
                 rel["label_destino"], rel["prop_destino"], rel["valor_destino"],
