@@ -6,7 +6,7 @@ def procesar_datos():
         lector = archivo.read()
     data = lector.split(";") 
     diccionarios = [ast.literal_eval('{' + u + '}') for u in data]
-    info = {"usuarios" : [], "destinos" : [], "hoteles": [], "actividades":[], "reservas":[] } 
+    info = {"usuarios" : [], "destinos" : [], "hoteles": [], "actividades":[], "reservas":[], "visito":[], "amigo":[] , "familiar":[]  } 
     for elem in diccionarios: 
         if list(elem.keys())[0] == 'usuario_id':
             info["usuarios"].append(elem) 
@@ -17,7 +17,13 @@ def procesar_datos():
         elif list(elem.keys())[0] == "actividad_id":
             info["actividades"].append(elem) 
         elif list(elem.keys())[0] == "reserva_id":
-            info["reservas"].append(elem) 
+            info["reservas"].append(elem)
+        elif list(elem.keys())[0] == "amigo_id":
+            info["amigo"].append(elem)
+        elif list(elem.keys())[0] == "familiar_id":
+            info["familiar"].append(elem)
+        elif list(elem.keys())[0] == "visito_id":
+            info["visito"].append(elem)  
     return info 
 
 
