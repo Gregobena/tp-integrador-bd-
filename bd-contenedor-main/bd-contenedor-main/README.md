@@ -30,9 +30,12 @@ REDIS_PASSWORD=redis123
 
 ## ▶️ Levantar el entorno
 ```bash
-docker compose up --build
+docker compose up --build    --> 
 ```
 La primera vez tarda un poco (descarga imágenes e instala dependencias).
+
+--> Se modifico por cuestiones de orden de estructura del proyecto ahora el comando de inicio es:
+docker compose -f docker/docker-compose.yml up -d --build
 
 ## ⏹️ Apagar y borrar contenedores
 ```bash

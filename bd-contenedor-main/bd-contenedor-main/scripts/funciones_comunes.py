@@ -3,6 +3,7 @@
 
 import json
 import os
+import csv
 from bson import ObjectId
 from config_paths import DATA_DIR
 
@@ -17,13 +18,12 @@ def cargar_json(nombre_archivo):
     with open(ruta, "r", encoding="utf-8") as f:
         return json.load(f)
 
-# === Compatibilidad con Mongo ===
-
-def convertir_objectid_a_str(documento):
+def cargar_csv(nombre_archivo):
     """
-    Convierte ObjectId a string en documentos de MongoDB para compatibilidad con Neo4j.
+    Carga un archivo CSV desde la carpeta /data y devuelve una lista de diccionarios.
+    Cada fila del CSV se convierte en un diccionario con los nombres de las columnas como claves.
     """
-    for k, v in documento.items():
-        if isinstance(v, ObjectId):
-            documento[k] = str(v)
-    return documento
+    ruta = os.path.join(DATA_DIR, nombre_archivo)
+    with open(ruta, newline='', encoding='utf-8') as f:
+        reader = csv.DictReader(f)
+        return list(reader)

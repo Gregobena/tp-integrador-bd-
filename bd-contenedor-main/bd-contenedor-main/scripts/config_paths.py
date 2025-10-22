@@ -13,6 +13,8 @@ DOCKER_DIR = os.path.join(BASE_DIR, "docker")
 USUARIOS_JSON = os.path.join(DATA_DIR, "usuarios.json")
 DESTINOS_JSON = os.path.join(DATA_DIR, "destinos.json")
 RESERVAS_JSON = os.path.join(DATA_DIR, "reservas.json")
+HOTELES_JSON = os.path.join(DATA_DIR, "hoteles.json")
+ACTIVIDADES_JSON = os.path.join(DATA_DIR, "actividades.json")
 VISITAS_CSV = os.path.join(DATA_DIR, "visitas.csv")
 REL_SOCIALES_CSV = os.path.join(DATA_DIR, "relaciones_sociales.csv")
 

@@ -1,6 +1,8 @@
 services:
   python:
-    build: ./python
+    build:
+      context: .
+      dockerfile: Dockerfile
     container_name: class-python
     depends_on:
       - neo4j
@@ -9,7 +11,9 @@ services:
     ports:
       - "8888:8888"
     volumes:
-      - ./notebooks:/work
+      - ../notebooks:/work
+      - ../scripts:/scripts
+      - ../data:/data
     environment:
       - PYTHONUNBUFFERED=1
     networks:
