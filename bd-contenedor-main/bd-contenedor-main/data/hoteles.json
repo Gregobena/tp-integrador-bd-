@@ -1,7 +1,58 @@
 [
-  { "destino_id": 1, "ciudad": "Bariloche", "pais": "Argentina", "tipo": "Montaña", "precio_promedio": 90000 },
-  { "destino_id": 2, "ciudad": "Cancún", "pais": "México", "tipo": "Playa", "precio_promedio": 150000 },
-  { "destino_id": 3, "ciudad": "Madrid", "pais": "España", "tipo": "Cultural", "precio_promedio": 110000 },
-  { "destino_id": 4, "ciudad": "Roma", "pais": "Italia", "tipo": "Histórico", "precio_promedio": 100000 },
-  { "destino_id": 5, "ciudad": "Mendoza", "pais": "Argentina", "tipo": "Vinos", "precio_promedio": 80000 }
+  {
+    "hotel_id": 1,
+    "nombre": "Hotel Sol",
+    "ciudad": "Bariloche",
+    "precio": 85000,
+    "calificacion": 4,
+    "servicios": ["wifi", "pileta", "desayuno"]
+  },
+  {
+    "hotel_id": 2,
+    "nombre": "Cumbres Andinas",
+    "ciudad": "Bariloche",
+    "precio": 120000,
+    "calificacion": 5,
+    "servicios": ["wifi", "spa", "pileta"]
+  },
+  {
+    "hotel_id": 3,
+    "nombre": "Altos del Norte",
+    "ciudad": "Jujuy",
+    "precio": 60000,
+    "calificacion": 3,
+    "servicios": ["wifi"]
+  },
+  {
+    "hotel_id": 4,
+    "nombre": "Montaña Real",
+    "ciudad": "Mendoza",
+    "precio": 95000,
+    "calificacion": 4,
+    "servicios": ["wifi", "pileta"]
+  },
+  {
+    "hotel_id": 5,
+    "nombre": "Playa Paraíso",
+    "ciudad": "Cancún",
+    "precio": 150000,
+    "calificacion": 5,
+    "servicios": ["wifi", "pileta", "bar", "all-inclusive"]
+  },
+  {
+    "hotel_id": 6,
+    "nombre": "Gran Europa",
+    "ciudad": "Madrid",
+    "precio": 110000,
+    "calificacion": 4,
+    "servicios": ["wifi", "desayuno", "gimnasio"]
+  },
+  {
+    "hotel_id": 7,
+    "nombre": "Coliseo Suites",
+    "ciudad": "Roma",
+    "precio": 100000,
+    "calificacion": 4,
+    "servicios": ["wifi", "desayuno", "terraza"]
+  }
 ]

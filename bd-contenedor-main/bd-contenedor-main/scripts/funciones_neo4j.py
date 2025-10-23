@@ -113,3 +113,41 @@ def cerrar_conexion():
     if driver:
         driver.close()
         print("🔒 Conexión con Neo4j cerrada correctamente.")
+
+
+
+def mostrar_relaciones():
+    """
+    Muestra todas las relaciones sociales (entre usuarios)
+    y las relaciones de visitas (usuario → destino).
+    """
+    if not driver:
+        print("❌ No hay conexión activa con Neo4j.")
+        return
+
+    def ejecutar_y_mostrar(query, descripcion):
+        with driver.session() as session:
+            resultados = session.run(query)
+            print(f"\n🔹 {descripcion}:")
+            encontrados = False
+            for r in resultados:
+                print(f"  {r['origen']} -[{r['relacion']}]-> {r['destino']}")
+                encontrados = True
+            if not encontrados:
+                print("  (sin resultados)")
+
+    # Relaciones sociales (Usuario ↔ Usuario)
+    query_sociales = """
+    MATCH (u1:Usuario)-[r]->(u2:Usuario)
+    RETURN u1.usuario_id AS origen, type(r) AS relacion, u2.usuario_id AS destino
+    ORDER BY origen, destino
+    """
+    ejecutar_y_mostrar(query_sociales, "Relaciones sociales (Usuario ↔ Usuario)")
+
+    # Relaciones de visitas (Usuario → Destino)
+    query_visitas = """
+    MATCH (u:Usuario)-[r:VISITO]->(d:Destino)
+    RETURN u.usuario_id AS origen, type(r) AS relacion, d.destino_id AS destino
+    ORDER BY origen, destino
+    """
+    ejecutar_y_mostrar(query_visitas, "Relaciones de visitas (Usuario → Destino)")
