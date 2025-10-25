@@ -30,7 +30,7 @@ REDIS_PASSWORD=redis123
 
 ## ▶️ Levantar el entorno
 ```bash
-docker compose up --build    --> 
+docker compose up --build    --> docker compose -f docker/docker-compose.yml up -d --para que busque donde esta el archivo docker-compose.yml
 ```
 La primera vez tarda un poco (descarga imágenes e instala dependencias).
 
