@@ -10,8 +10,7 @@ load_dotenv(os.path.join(os.path.dirname(__file__), "..", "docker", ".env"))
 r = redis.Redis(
     host='redis',              # usar el nombre del servicio de Docker Compose
     port=6379,
-    #password=os.getenv("REDIS_PASSWORD"),
-    password='redis123',
+    password=os.getenv("REDIS_PASSWORD","redis123"),
     decode_responses=True
 )
 

@@ -14,6 +14,7 @@ services:
       - ../notebooks:/work
       - ../scripts:/scripts
       - ../data:/data
+      - ../docker:/docker
     environment:
       - PYTHONUNBUFFERED=1
     networks:
