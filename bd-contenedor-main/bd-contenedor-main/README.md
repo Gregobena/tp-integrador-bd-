@@ -1,79 +1,136 @@
-# 🧪 Classroom Stack: Python + Neo4j + MongoDB + Redis (Docker)
+✈️ Sistema de Gestión y Recomendación de Viajes
 
-Este stack está pensado para levantar **Neo4j**, **MongoDB**, **Redis** y un contenedor de **Python + JupyterLab**
-con todas las librerías necesarias preinstaladas.
+Bases de Datos: Neo4j + MongoDB + Redis (Docker + Python + JupyterLab)
 
-## 🚀 Requisitos
-- [Docker Desktop](https://www.docker.com/products/docker-desktop/) (Windows/Mac) o Docker Engine (Linux)
-- `docker compose` (v2+)
+Este proyecto implementa un sistema distribuido que integra bases de datos relacionales y no relacionales para modelar un Sistema de Gestión y Recomendación de Viajes.
+Permite almacenar información de usuarios, destinos, hoteles, actividades y reservas, además de generar recomendaciones personalizadas y estadísticas utilizando Neo4j, MongoDB y Redis.
 
-> En Windows, si usás WSL2, asegurate de que Docker Desktop tenga activado el backend WSL.
+🚀 Requisitos
 
-## 🧩 Servicios
-- **python**: JupyterLab en `http://localhost:8888` (sin token), con `neo4j`, `pymongo` y `redis` ya instalados.
-- **neo4j**: Browser en `http://localhost:7474`, Bolt en `bolt://localhost:7687`.
-- **mongo**: Servidor en `mongodb://<user>:<pass>@localhost:27017/`.
-- **redis**: Servidor en `redis://:<password>@localhost:6379`.
+Docker Desktop
+ (Windows/Mac) o Docker Engine (Linux)
 
-## 🔒 Credenciales (editar en `.env` o usar `.env.example`)
-```
+docker compose (v2+)
+
+Navegador web para acceder a JupyterLab y Neo4j Browser
+
+💡 En Windows, si usás WSL2, asegurate de que Docker Desktop tenga activado el backend WSL.
+
+🧩 Servicios
+Servicio	Descripción	Acceso
+python	Contenedor con JupyterLab y librerías (neo4j, pymongo, redis, matplotlib, pandas, etc.)	http://localhost:8888
+neo4j	Base de datos de grafos para modelar relaciones sociales y de viajes	http://localhost:7474 (Browser) / bolt://localhost:7687
+mongo	Base documental para almacenar usuarios, destinos, hoteles, actividades y reservas	mongodb://<user>:<pass>@localhost:27017/
+redis	Base en memoria para manejar búsquedas recientes, sesiones activas y reservas temporales	redis://:<password>@localhost:6379
+🔒 Variables de entorno
+
+Editables en docker/.env (o copiando .env.example):
+
+NEO4J_USER=neo4j
 NEO4J_PASSWORD=neo4j123
 MONGO_INITDB_ROOT_USERNAME=admin
 MONGO_INITDB_ROOT_PASSWORD=admin123
+MONGO_INITDB_DATABASE=viajes
 REDIS_PASSWORD=redis123
-```
 
-> Para empezar rápido: copiá `.env.example` a `.env` sin cambios:
-> ```bash
-> cp .env.example .env
-> ```
 
-## ▶️ Levantar el entorno
-```bash
-docker compose up --build    --> docker compose -f docker/docker-compose.yml up -d --para que busque donde esta el archivo docker-compose.yml
-```
-La primera vez tarda un poco (descarga imágenes e instala dependencias).
+Para empezar rápido:
 
---> Se modifico por cuestiones de orden de estructura del proyecto ahora el comando de inicio es:
+cp docker/.env.example docker/.env
+
+▶️ Levantar el entorno
+
+Desde la raíz del proyecto:
+
 docker compose -f docker/docker-compose.yml up -d --build
 
-## ⏹️ Apagar y borrar contenedores
-```bash
+
+La primera ejecución descargará las imágenes necesarias y construirá el entorno completo.
+
+⏹️ Apagar y limpiar contenedores
 docker compose down
-```
-Para borrar volúmenes (datos persistentes), agregá `-v`:
-```bash
+
+
+Para eliminar también los volúmenes (datos persistentes):
+
 docker compose down -v
-```
 
-## 📒 JupyterLab
-Abrí `http://localhost:8888`. Vas a encontrar ejemplos:
-- `notebooks/test_connections.ipynb` (o el script `test_connections.py`)
+🧠 Estructura del proyecto
+📦 sistema-viajes/
+│
+├── 🧠 notebooks/
+│   └── Notebook_Principal.ipynb       # Ejecución principal del TP
+│   └── data/
+│       ├── usuarios.json
+│       ├── destinos.json
+│       ├── hoteles.json
+│       ├── actividades.json
+│       ├── reservas.json
+│       ├── relaciones_sociales.csv
+│       └── visitas.csv
+│
+├── 🐳 docker/
+│   ├── Dockerfile
+│   ├── docker-compose.yml
+│   ├── requirements.txt
+│   └── .env
+│
+├── 📜 scripts/
+│   ├── config_paths.py
+│   ├── funciones_comunes.py
+│   ├── funciones_mongo.py
+│   ├── funciones_neo4j.py
+│   ├── funciones_redis.py
+│
+├── 📊 Otros/
+│   └── consigna TP.pdf
+│
+├── 📘 README.md
+└── .gitignore
 
-## 🧪 Pruebas rápidas desde Python
-Dentro de JupyterLab:
-```python
-# Neo4j
-from neo4j import GraphDatabase
-driver = GraphDatabase.driver("bolt://neo4j:7687", auth=("neo4j", "neo4j123"))
-with driver.session() as s:
-    s.run("CREATE (:City {name:'La Plata'})")
-    print(s.run("MATCH (n:City) RETURN count(n) AS c").single()["c"])
+🧩 Interacción entre archivos y servicios
+                        ┌─────────────────────────┐
+                        │Notebook_Principal.ipynb │
+                        │   (orquestador general) │
+                        └──────────┬──────────────┘
+                                   │
+                 ┌─────────────────┼────────────────────┐
+                 │                 │                    │
+      ┌──────────▼────────┐ ┌──────▼──────────┐ ┌───────▼─────────┐
+      │ funciones_mongo.py│ │ funciones_neo4j │ │ funciones_redis │
+      │ (CRUD + consultas)│ │ (nodos y rel.)  │ │(cache, sesiones)│
+      └──────────┬────────┘ └────────┬────────┘ └────────┬────────┘
+                 │                   │                   │
+        ┌────────▼────────┐   ┌──────▼──────────┐ ┌──────▼────────┐
+        │   MongoDB       │   │     Neo4j       │ │     Redis     │
+        │ (colecciones)   │   │ (nodos y rel.)  │ │   (memoria)   │
+        └─────────────────┘   └─────────────────┘ └───────────────┘
+                 ▲                   ▲
+                 │                   │
+      ┌──────────┴──────────┐  ┌─────┴────────────┐
+      │ funciones_comunes.py│  │ funciones_comunes│
+      │ (lectura JSON/CSV)  │  │ (lectura CSV)    │
+      │   JSON → MongoDB    │  │  CSV → Neo4j     │
+      └─────────────────────┘  └──────────────────┘
 
-# MongoDB
-from pymongo import MongoClient
-client = MongoClient("mongodb://admin:admin123@mongo:27017/")
-db = client["clase"]
-db.alumnos.insert_one({"nombre":"Edu","tema":"Grafos"})
-print(db.alumnos.count_documents({}))
+🧪 Carga y consultas principales
 
-# Redis
-import redis
-r = redis.Redis(host="redis", port=6379, password="redis123", decode_responses=True)
-r.set("saludo","hola")
-print(r.get("saludo"))
-```
+El sistema implementa consultas integradas entre las tres bases, por ejemplo:
 
-## Tips
-- Si `7474`/`7687`/`27017`/`6379`/`8888` están ocupados, cambiá los puertos publicados en `docker-compose.yml`.
-- Los datos **persisten** en los volúmenes docker (`neo4j_data`, `mongo_data`); para empezar limpio, hacé `docker compose down -v`.
+Usuarios que visitaron Bariloche (Neo4j)
+
+Amigos de un usuario que compartieron destinos (Neo4j + MongoDB)
+
+Recomendaciones basadas en amigos y destinos no visitados (Neo4j + Redis)
+
+Hoteles y actividades en destinos sugeridos (MongoDB)
+
+Usuarios conectados actualmente (Redis)
+
+Estadísticas gráficas:
+
+Destino más visitado
+
+Hotel más económico
+
+Actividad más popular
